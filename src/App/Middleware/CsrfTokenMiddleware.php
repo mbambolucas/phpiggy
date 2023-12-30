@@ -7,7 +7,7 @@ namespace App\Middleware;
 use Framework\Contracts\MiddlewareInterface;
 use Framework\TemplateEngine;
 
-class FlashMiddleware implements MiddlewareInterface
+class CsrfTokenMiddleware implements MiddlewareInterface
 {
     public function __construct(private TemplateEngine $view)
     {
@@ -15,13 +15,9 @@ class FlashMiddleware implements MiddlewareInterface
 
     public function process(callable $next)
     {
-        $this->view->addGloabal('errors', $_SESSION['errors'] ?? []);
+        $_SESSION['token'] = $_SESSION['token'] ?? bin2hex(random_bytes(32));
 
-        unset($_SESSION['errors']);
-
-        $this->view->addGloabal('oldFormData', $_SESSION['oldFormData'] ?? []);
-
-        unset($_SESSION['oldFormData']);
+        $this->view->addGloabal('csrfToken', $_SESSION['token']);
 
         $next();
     }
