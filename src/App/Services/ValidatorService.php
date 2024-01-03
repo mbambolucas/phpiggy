@@ -65,4 +65,12 @@ class ValidatorService
             'date' => ['required', 'dateFormat:Y-m-d']
         ]);
     }
+
+    /*
+    public function validateFiles(array $formData)
+    {
+        $this->validator->validate($formData, [
+            'receipt' => ['required']
+        ]);
+    }*/
 }
